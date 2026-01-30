@@ -1,9 +1,9 @@
+from transformers import RobertaTokenizer, RobertaForSequenceClassification
 import torch
 import torch.nn.functional as F
-from transformers import RobertaTokenizer, RobertaForSequenceClassification
 
 tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-model = RobertaForSequenceClassification.from_pretrained("checkpoints/text")
+model = RobertaForSequenceClassification.from_pretrained("roberta-base")
 model.eval()
 
 def caption_fake_probability(text):

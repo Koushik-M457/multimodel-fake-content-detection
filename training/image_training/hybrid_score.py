@@ -1,4 +1,5 @@
-from watermark import watermark_score
+from .watermark import watermark_score
+
 
 def hybrid_image_score(resnet_score, image_path,
                        resnet_weight=0.8,

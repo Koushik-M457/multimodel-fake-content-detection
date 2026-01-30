@@ -1,5 +1,6 @@
 import json
-from similarity import relevance_score
+from .similarity import relevance_score
+
 
 with open("training/hashtag_training/thresholds.json") as f:
     THRESHOLD = json.load(f)["threshold"]
