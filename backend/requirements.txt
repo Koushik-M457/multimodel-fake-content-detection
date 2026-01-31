@@ -7,4 +7,5 @@ sentence-transformers
 opencv-python
 numpy
 pillow
+python-multipart
 
