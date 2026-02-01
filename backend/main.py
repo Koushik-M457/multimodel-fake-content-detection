@@ -4,10 +4,11 @@ from training.image_training.hybrid_score import hybrid_image_score
 from training.text_training.inference import caption_fake_probability
 from training.hashtag_training.inference import hashtag_relevance
 from training.fusion_training.fusion import multimodal_fusion
-import torch
 import shutil
+import os
 
 app = FastAPI()
+
 
 @app.post("/analyze")
 async def analyze_post(
@@ -15,30 +16,39 @@ async def analyze_post(
     caption: str = Form(...),
     hashtags: str = Form(...)
 ):
+    # Save uploaded image
     image_path = f"temp_{image.filename}"
 
     with open(image_path, "wb") as buffer:
         shutil.copyfileobj(image.file, buffer)
 
-    # IMAGE
-    image_tensor = load_image(image_path)
-    image_score = hybrid_image_score(
-        resnet_score=0.7,  # replace with real inference
-        image_path=image_path
-    )["final_image_score"]
+    try:
+        # IMAGE (Hybrid: ResNet + Watermark)
+        image_result = hybrid_image_score(
+            resnet_score=0.7,   # TODO: replace with real ResNet inference
+            image_path=image_path
+        )
 
-    # TEXT
-    text_score = caption_fake_probability(caption)
+        image_score = image_result["final_image_score"]
+        watermark_score = image_result["watermark_score"]
 
-    # HASHTAGS
-    hashtag_score = hashtag_relevance(caption, hashtags)["hashtag_score"]
+        # TEXT
+        text_score = caption_fake_probability(caption)
 
-    # FUSION
-    final_result = multimodal_fusion(
-        image_score=image_score,
-        text_score=text_score,
-        hashtag_score=hashtag_score
-    )
+        # HASHTAGS
+        hashtag_score = hashtag_relevance(caption, hashtags)["hashtag_score"]
 
-    return final_result
+        # FUSION (SAFE TWO-SIGNAL LOGIC)
+        final_result = multimodal_fusion(
+            image_score=image_score,
+            watermark_score=watermark_score,
+            text_score=text_score,
+            hashtag_score=hashtag_score
+        )
 
+        return final_result
+
+    finally:
+        # Cleanup temp file
+        if os.path.exists(image_path):
+            os.remove(image_path)
