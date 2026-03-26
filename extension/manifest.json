@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "AI Instagram Image Filter",
+  "version": "1.0",
+  "description": "Blur AI generated images on Instagram",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "https://www.instagram.com/*",
+    "http://127.0.0.1:8000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.instagram.com/*"],
+      "js": ["content.js"],
+      "css": ["style.css"]
+    }
+  ]
+}

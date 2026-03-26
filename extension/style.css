@@ -1,0 +1,4 @@
+.ai-blur {
+    filter: blur(25px) !important;
+    transition: filter 0.3s ease;
+}

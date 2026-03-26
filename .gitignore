@@ -1,0 +1,12 @@
+data/
+dataset/
+*.jpg
+*.png
+*.jpeg
+*.pt
+*.pth
+*.h5
+*.csv
+__pycache__/
+.env
+node_modules/
