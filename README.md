@@ -16,6 +16,7 @@ a multimodal AI model that analyzes both images and text.
 - Computer Vision
 
 ## Project Structure
+
 multimodel-fake-content-detection/
 │
 ├── data/
@@ -24,6 +25,7 @@ multimodel-fake-content-detection/
 ├── app.py
 ├── requirements.txt
 └── README.md
+
 ### 2️⃣ Add requirements.txt
 
 Run this in your project folder:
